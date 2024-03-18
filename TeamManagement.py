@@ -1,12 +1,14 @@
 class TeamManagement:
     def __init__(self):
         self.team=[]
-    def add_member(self,member):
-        self.team.append(member)
-        print(f"{member} Was Added as a New Member of the team")
+    def add_member(self,member,role,role_list):
+        role_list.check_role(role)
+        self.team.append({"name":member,"role":role})
+        print(f"{member} Was Added as a New Member with the role {role}")
     def remove_member(self,member):
         try:
-            self.team.remove(member)
+            index = next (i for i, memberCard in self.team if memberCard["name"] == member)
+            self.team.remove(index)
         except ValueError:
             print(f"The member {member} does not exist in the list")
     def get_members(self):

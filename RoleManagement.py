@@ -17,4 +17,6 @@ class RoleManagement:
             self.roles.append(new_role)
         except ValueError:
             print(f"The role {role_to_change}, was updated to {new_role}")
-            
+    def check_role(self,role):
+        if role not in self.roles:
+            self.add_role(role)      
