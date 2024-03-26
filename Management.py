@@ -1,14 +1,11 @@
 from Role import Role
 from User import User
 
-
-
 class Management:
     def __init__(self):
         self.roles = []
         self.users = []
-          
-
+    
     def add_role(self, role):
         self.roles.append(role)
 
@@ -18,67 +15,39 @@ class Management:
 
     def create_user(self, name, lastname, role_name):
         found_role = None
-        for role in self.roles:
-            if role.name == role_name:
-                found_role = role
-                break
-
-        if found_role:
+        index = self.get_index(self.roles,"name",role_name)
+        
+        if index != None:
+            found_role = self.roles[index]
             user = User(name, lastname, found_role)
             self.users.append(user)
-            print(f"User {name} {lastname} created succesfully.")
+            print(f"\nUser {name} {lastname} was created succesfully with role {role_name}.")
         else:
-            print(f"Role {role_name} not found.")
+            print(f"\nRole {role_name} not found.\n")
 
     def display_users(self):
         for user in self.users:
             print(user)
 
     def remove_role(self, role_name):
-        for role in self.roles:
-            if role.name == role_name:
-                self.roles.remove(role)
-                print(f"Role {role_name} was removed.")
-                break
-        else:
-            print(f"Role {role_name} not found.")
+        index = self.get_index(self.roles,"name",role_name)
+        try:
+            self.roles.pop(index)
+            print(f"\nThe role {role_name} was removed\n")
+            return None                           
+        except TypeError:
+            print(f"\nRole {role_name} not found.\n")  
 
-    def update_role(self, role_name, new_roleName = None,new_description = None):
-        if new_roleName or new_description != None:
-            index = self.get_index(self.roles,"name",role_name)
-            try:
-                role = self.roles(index)
-                role_description = role.description
-                if new_roleName != None and new_description != None:
-                    self.roles.pop(index)
-                    new_role = Role(new_roleName,new_description)
-                    self.roles.insert(index,new_role)
-                    print(f"Updated Role Name and Description")
-                    return None
-                if new_roleName != None and new_description == None:
-                    self.roles.pop(index)
-                    new_role = Role(new_roleName,new_description)
-                    self.roles.insert(index,new_role)
-                    print(f"Updated Role Name and Description")
-                    return None                             
-            except ValueError:
-                print(f"Role {role_name} not found.")
-        else:
-            print(f"Any values entered for update, Operation Cancelled")
-        
-        
-        
-            
-        
-            
-        for role in self.roles:
-            if Role.name == role_name:
-                role.descripcion = new_description
-                print(f"Role {role_name} updated succesfully.")
-                break
-        else:
-            print(f"Role {role_name} not found.")
-            
+    def update_role_description(self, role_name,new_description):
+        index = self.get_index(self.roles,"name",role_name)
+        try:
+            self.roles.pop(index)
+            new_role = Role(role_name,new_description)
+            self.roles.insert(index,new_role)
+            print(f"\nUpdated Role {role_name} with new description\n")
+            return None                           
+        except TypeError:
+            print(f"\nRole {role_name} not found.\n")                      
     
     def get_index(self,list,attribute,value):
         for i, obj in enumerate(list):
@@ -88,3 +57,6 @@ class Management:
             except AttributeError:
                     pass
         return None
+    
+    
+    
